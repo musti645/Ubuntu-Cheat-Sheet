@@ -67,6 +67,13 @@
 
 `sudo service {SERVICE_NAME} status`
 
+
+### Status of All Services ###
+
+See [here](https://askubuntu.com/a/422178) for more information.
+
+`sudo service --status-all`
+
 ## Apache 2 ##
 
 ### Enable Site ###
@@ -308,3 +315,41 @@ with
 See [here](https://stackoverflow.com/a/49483740/5721515) and the comment of Bernd Schuchmacher for more information
 
 #### Wordpress #####
+
+## Problem Solving ##
+
+### Logs ###
+
+#### OpenSSH Auth Log ####
+
+`grep 'sshd' /var/log/auth.log`
+
+#### Apache2 Error Logs ####
+
+`tail -f /var/log/apache2/error.log`
+
+### Memory ###
+
+`df -h`
+
+### RAM ###
+
+`top`
+ `cat /proc/meminfo`
+
+### Processes ###
+
+See processes:
+`ps -ef`
+
+Group processes by user:
+`pgrep -l -u {USERNAME}`
+
+Kill process:
+`pkill {PROCESS}`
+OR `killall {PROCESS}`
+
+### Reboot ###
+
+Straightforward as it gets:
+`sudo reboot`
