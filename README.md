@@ -159,7 +159,7 @@ if you also want to remove the configs you'll need to purge it
 ### Create Archive ###
 
 Creates an archive in the current directory of the stuff in the target directory.
-`tar -czvf {FILENAME}.tar.gz {PATH_TO_DIRECTORY}`
+`tar czvf {FILENAME}.tar.gz {PATH_TO_DIRECTORY}`
 
 ## Initial Server ToDos ##
 
@@ -209,6 +209,12 @@ If working with MySQL
 
 `sudo apt install python-certbot-apache`
 
+Dry-run renewing certificates
+
+`sudo certbot renew --dry-run`
+
+After renewing reload apache.
+
 #### SFTP ####
 
 #### phpMyAdmin ####
@@ -220,16 +226,36 @@ If working with MySQL
 #### Users ####
 
 Create a sudo non root user by adding a user and giving it sudo privileges.
-
-#### Disable root login ####
-
-Comment out `PermitRootLogin prohibit-password` and add `PermitRootLogin no` in `/etc/ssh/sshd_config`
+`adduser {USERNAME}`
+`usermod -aG sudo {USERNAME}`
 
 #### Firewall ####
 
 Let Firewall (ufw) allow only SSH connections to the server
 `ufw allow OpenSSH`
 `ufw enable`
+
+#### Add SSH key #####
+
+Create an ssh public/private key pair e.g. by using PUTTYgen.
+Copy the contents of the ssh key to `~/.ssh/authorized_keys` logged in as the user, that the keys are supposed to belong to.
+Update the permission scheme of the newly created directory and file.
+`chmod -R go= ~/.ssh`
+`chown -R {USERNAME}:{USERNAME} ~/.ssh`
+
+Try logging in using your new private/public key combination. If it works, you can disable password authentication.
+
+#### Disable password authentication ####
+
+Update the ssh configuration file.
+`sudo nano /etc/ssh/sshd_config`
+Set `PasswordAuthentication no` and `UsePAM no`
+`sudo systemctl restart ssh`
+
+#### Disable root login ####
+
+Comment out `PermitRootLogin prohibit-password` and add `PermitRootLogin no` in `/etc/ssh/sshd_config`
+Make sure, that you've got at least one user with sudo privileges, which is able to login (preferably via ssh).
 
 #### Certbot ####
 
