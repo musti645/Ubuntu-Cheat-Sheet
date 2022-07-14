@@ -235,13 +235,33 @@ Let Firewall (ufw) allow only SSH connections to the server
 `ufw allow OpenSSH`
 `ufw enable`
 
+#### Change SSH Ports ####
+
+To further increase security, you can change your SSH ports.
+To do so, edit `/etc/ssh/sshd_config` and set `Port {PORT_NUMBER}`.
+
+This also needs to be passed on to ufw. Change the ports for the application in the ufw configurations.
+`sudo nano /etc/ufw/applications.d/openssh-server`
+
+Update `ports={PORT_NUMBER}/tcp`
+You can also add more than one port to the configuration line for ports. E.g. `ports=22,33,44/tcp`
+
+Save the file and update ufw.
+
+`ufw app update OpenSSH`
+`ufw app info OpenSSH`
+
 #### Add SSH key #####
 
 Create an ssh public/private key pair e.g. by using PUTTYgen.
 Copy the contents of the ssh key to `~/.ssh/authorized_keys` logged in as the user, that the keys are supposed to belong to.
 Update the permission scheme of the newly created directory and file.
-`chmod -R go= ~/.ssh`
-`chown -R {USERNAME}:{USERNAME} ~/.ssh`
+`chmod 700 ~/.ssh`
+`chmod 600 ~/.ssh/authorized_keys`
+`chown -R {USERNAME}:{USERNAME} ~/.ssh -R`
+
+Update `/etc/ssh/sshd_config` and add to the `AuthorizedKeysFile %h/.ssh/authorized_keys`
+`sudo service ssh restart`
 
 Try logging in using your new private/public key combination. If it works, you can disable password authentication.
 
@@ -250,7 +270,7 @@ Try logging in using your new private/public key combination. If it works, you c
 Update the ssh configuration file.
 `sudo nano /etc/ssh/sshd_config`
 Set `PasswordAuthentication no` and `UsePAM no`
-`sudo systemctl restart ssh`
+`sudo service ssh restart`
 
 #### Disable root login ####
 
