@@ -161,6 +161,13 @@ if you also want to remove the configs you'll need to purge it
 Creates an archive in the current directory of the stuff in the target directory.
 `tar czvf {FILENAME}.tar.gz {PATH_TO_DIRECTORY}`
 
+### Unpack a Tarball ###
+
+Unpacks the contents of the tarball into a folder in the current directory.
+`tar xvf {FILENAME}.tar`
+or
+`tar xzvf {FILENAME}.tar.gz` for gzipped files.
+
 ## Initial Server ToDos ##
 
 Also have a look at [this](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04)
